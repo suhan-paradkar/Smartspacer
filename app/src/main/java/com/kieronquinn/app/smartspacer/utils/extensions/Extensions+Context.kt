@@ -99,7 +99,7 @@ fun Context.getAppPredictionComponent(): ComponentName? {
     val id = resources.getIdentifier(
         "config_defaultAppPredictionService", "string", "android"
     )
-    val component = resources.getString(id)
+    val component = ""
     if(component.isBlank()) return null
     val componentName = ComponentName.unflattenFromString(component) ?: return null
     //Some ROMs have the value set but the wrong ASI build so check it's actually available

@@ -161,7 +161,7 @@ public class LocalActivityManagerCompat {
             try {
                 r.activity = startActivityNow(mActivityThread,
                         mParent, r.id, r.intent, r.activityInfo, r, r.instanceState, instance, r);
-            } catch (PackageManager.NameNotFoundException e) {
+            }catch (PackageManager.NameNotFoundException e) {
                 e.printStackTrace();
             }
             if (r.activity == null) {
@@ -277,7 +277,9 @@ public class LocalActivityManagerCompat {
                                            Object lastNonConfigurationInstances, IBinder assistToken) throws PackageManager.NameNotFoundException {
         ActivityClientRecord r = new ActivityClientRecord();
         r.token = token;
-        r.assistToken = assistToken;
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.P) {
+            r.assistToken = assistToken;
+        }
         ResolveInfo resolvedIntent = parent.getPackageManager().resolveActivity(intent, 0);
         r.packageInfo = activityThread.getPackageInfoNoCheck(parent.getPackageManager().getApplicationInfo(resolvedIntent.activityInfo.packageName, 0), null);
         try {
@@ -793,7 +795,9 @@ public class LocalActivityManagerCompat {
             if(isAtLeastS()) {
                 mActivityThread.performResumeActivity(mActivityThread.getActivityClient(binder), finalStateRequest, reason);
             }else{
-                mActivityThread.performResumeActivity(binder, finalStateRequest, reason);
+                if (Build.VERSION.SDK_INT > Build.VERSION_CODES.P) {
+                    mActivityThread.performResumeActivity(binder, finalStateRequest, reason);
+                }
             }
         }
 
@@ -806,14 +810,17 @@ public class LocalActivityManagerCompat {
         }
 
         private static void performDestroyActivity(IBinder binder, ActivityThread mActivityThread, boolean finishing, int configChanges, boolean getNonConfigInstance, String reason){
-            try{
-                Method performDestroyActivity = ActivityThread.class.getDeclaredMethod("performDestroyActivity", ActivityClientRecord.class, boolean.class, int.class, boolean.class, String.class);
-                performDestroyActivity.setAccessible(true);
-                performDestroyActivity.invoke(mActivityThread, mActivityThread.getActivityClient(binder), finishing, configChanges /* configChanges */,
-                        getNonConfigInstance /* getNonConfigInstance */, reason);
-            } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-                // Suppress
-                Log.e(TAG, "Error", e);
+            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.P) {
+                try {
+                    Method performDestroyActivity = ActivityThread.class.getDeclaredMethod("performDestroyActivity", ActivityClientRecord.class, boolean.class, int.class, boolean.class, String.class);
+                    performDestroyActivity.setAccessible(true);
+                    performDestroyActivity.invoke(mActivityThread, mActivityThread.getActivityClient(binder), finishing, configChanges /* configChanges */,
+                            getNonConfigInstance /* getNonConfigInstance */, reason);
+                } catch (NoSuchMethodException | IllegalAccessException |
+                         InvocationTargetException e) {
+                    // Suppress
+                    Log.e(TAG, "Error", e);
+                }
             }
         }
 
@@ -843,9 +850,12 @@ public class LocalActivityManagerCompat {
         }
 
         private static Bundle performPauseActivity(IBinder token, ActivityThread mActivityThread, boolean finished, String reason, PendingTransactionActions pendingActions) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
-            Method performPauseActivity = ActivityThread.class.getDeclaredMethod("performPauseActivity", IBinder.class, boolean.class, String.class, PendingTransactionActions.class);
-            performPauseActivity.setAccessible(true);
-            return (Bundle) performPauseActivity.invoke(mActivityThread, token, finished, reason, null /* pendingActions */);
+            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.P) {
+                Method performPauseActivity = ActivityThread.class.getDeclaredMethod("performPauseActivity", IBinder.class, boolean.class, String.class, PendingTransactionActions.class);
+                performPauseActivity.setAccessible(true);
+                return (Bundle) performPauseActivity.invoke(mActivityThread, token, finished, reason, null /* pendingActions */);
+            }
+            return Bundle.EMPTY;
         }
 
     }

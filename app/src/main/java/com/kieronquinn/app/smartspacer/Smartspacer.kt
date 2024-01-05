@@ -66,10 +66,6 @@ import com.kieronquinn.app.smartspacer.ui.screens.configuration.datetime.TimeDat
 import com.kieronquinn.app.smartspacer.ui.screens.configuration.datetime.TimeDateConfigurationViewModelImpl
 import com.kieronquinn.app.smartspacer.ui.screens.configuration.default.DefaultTargetConfigurationViewModel
 import com.kieronquinn.app.smartspacer.ui.screens.configuration.default.DefaultTargetConfigurationViewModelImpl
-import com.kieronquinn.app.smartspacer.ui.screens.configuration.geofence.GeofenceRequirementConfigurationViewModel
-import com.kieronquinn.app.smartspacer.ui.screens.configuration.geofence.GeofenceRequirementConfigurationViewModelImpl
-import com.kieronquinn.app.smartspacer.ui.screens.configuration.geofence.name.GeofenceRequirementConfigurationNameViewModel
-import com.kieronquinn.app.smartspacer.ui.screens.configuration.geofence.name.GeofenceRequirementConfigurationNameViewModelImpl
 import com.kieronquinn.app.smartspacer.ui.screens.configuration.gmail.GmailComplicationConfigurationViewModel
 import com.kieronquinn.app.smartspacer.ui.screens.configuration.gmail.GmailComplicationConfigurationViewModelImpl
 import com.kieronquinn.app.smartspacer.ui.screens.configuration.greeting.GreetingConfigurationViewModel
@@ -249,7 +245,6 @@ class Smartspacer: Application(), Configuration.Provider {
         single<SmartspacerSettingsRepository> { SmartspacerSettingsRepositoryImpl(get()) }
         single<ShizukuServiceRepository> { ShizukuServiceRepositoryImpl(get(), get()) }
         single<SystemSmartspaceRepository>(createdAtStart = true) { SystemSmartspaceRepositoryImpl(get(), get(), get(), get(), get()) }
-        single<AnalyticsRepository>(createdAtStart = true) { AnalyticsRepositoryImpl(get(), get()) }
         single<SmartspaceRepository> { SmartspaceRepositoryImpl(get(), get(), get(), get()) }
         single<TargetsRepository> { TargetsRepositoryImpl(get(), get()) }
         single<AppPredictionRepository>(createdAtStart = true) { AppPredictionRepositoryImpl(
@@ -270,11 +265,6 @@ class Smartspacer: Application(), Configuration.Provider {
         single<DatabaseRepository> { DatabaseRepositoryImpl(get()) }
         single<RequirementsRepository> { RequirementsRepositoryImpl(get(), get()) }
         single<MediaRepository>(createdAtStart = true) { MediaRepositoryImpl(get()) }
-        single<GeofenceRepository>(createdAtStart = true) { GeofenceRepositoryImpl(
-            get(),
-            get(),
-            get()
-        ) }
         single { SmartspacerDatabase.getDatabase(get()) }
         single<WidgetRepository> { WidgetRepositoryImpl(get(), get()) }
         single<GrantRepository>(createdAtStart = true) { GrantRepositoryImpl(get()) }
@@ -317,8 +307,6 @@ class Smartspacer: Application(), Configuration.Provider {
         viewModel<ComplicationsRequirementsPageViewModel> { ComplicationsRequirementsPageViewModelImpl(get(), get(), get(), get()) }
         viewModel<ComplicationsRequirementsAddViewModel> { ComplicationsRequirementsAddViewModelImpl(get(), get(), get(), get()) }
         viewModel<TimeDateConfigurationViewModel> { TimeDateConfigurationViewModelImpl(get(), get()) }
-        viewModel<GeofenceRequirementConfigurationViewModel> { GeofenceRequirementConfigurationViewModelImpl(get(), get(), get(), get()) }
-        viewModel<GeofenceRequirementConfigurationNameViewModel> { GeofenceRequirementConfigurationNameViewModelImpl() }
         viewModel<AppPredictionRequirementConfigurationViewModel> { AppPredictionRequirementConfigurationViewModelImpl(get(), get()) }
         viewModel<SmartspacerWidgetConfigurationViewModel> { SmartspacerWidgetConfigurationViewModelImpl(get(), get()) }
         viewModel<SettingsViewModel> { SettingsViewModelImpl(get(), get(), get()) }

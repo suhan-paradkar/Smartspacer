@@ -7,8 +7,6 @@ plugins {
     id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
     id 'dev.rikka.tools.refine'
     id 'com.google.protobuf'
-    id 'com.google.gms.google-services'
-    id 'com.google.firebase.crashlytics'
 }
 
 apply plugin: 'com.google.android.gms.oss-licenses-plugin'
@@ -21,7 +19,7 @@ android {
 
     defaultConfig {
         applicationId "com.kieronquinn.app.smartspacer"
-        minSdk 29
+        minSdk 28
         targetSdk 34
         versionCode tagCode
         versionName tagName
@@ -39,6 +37,7 @@ android {
     buildFeatures {
         viewBinding true
         aidl true
+        buildConfig true
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
@@ -57,9 +56,6 @@ android {
             jniLibs {
                 useLegacyPackaging = true
             }
-        }
-        unitTests.all {
-            isIncludeAndroidResources = true
         }
         execution 'ANDROIDX_TEST_ORCHESTRATOR'
     }
@@ -103,9 +99,6 @@ dependencies {
     //Bypass hidden API restrictions
     implementation 'org.lsposed.hiddenapibypass:hiddenapibypass:4.3'
 
-    implementation 'com.google.android.gms:play-services-location:21.0.1'
-    implementation 'com.google.android.gms:play-services-maps:18.2.0'
-
     implementation 'com.github.KieronQuinn:MonetCompat:0.4.1'
     implementation 'com.google.code.gson:gson:2.10.1'
 
@@ -127,9 +120,6 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.16.0'
     ksp 'com.github.bumptech.glide:ksp:4.15.1'
 
-    implementation 'com.google.android.gms:play-services-location:21.0.1'
-    implementation 'com.google.android.gms:play-services-maps:18.2.0'
-    implementation 'com.google.maps.android:android-maps-utils:3.8.0'
     implementation 'me.saket:better-link-movement-method:2.2.0'
 
     implementation 'com.airbnb.android:lottie:6.2.0'
@@ -150,11 +140,6 @@ dependencies {
 
     //OSS libraries activity
     implementation 'com.google.android.gms:play-services-oss-licenses:17.0.1'
-
-    //Firebase Analytics + Crashlytics
-    implementation(platform("com.google.firebase:firebase-bom:32.3.1"))
-    implementation("com.google.firebase:firebase-crashlytics-ktx")
-    implementation("com.google.firebase:firebase-analytics-ktx")
 
     //Xposed for Discover replacement
     compileOnly("de.robv.android.xposed:api:82")

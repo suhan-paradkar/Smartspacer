@@ -18,6 +18,7 @@ import android.net.wifi.WifiManager
 import android.os.Build
 import android.provider.Settings
 import android.util.Log
+import androidx.annotation.RequiresApi
 import com.kieronquinn.app.smartspacer.components.smartspace.requirements.WiFiRequirement
 import com.kieronquinn.app.smartspacer.repositories.WiFiRepository.WiFiNetwork
 import com.kieronquinn.app.smartspacer.sdk.provider.SmartspacerRequirementProvider
@@ -96,6 +97,7 @@ class WiFiRepositoryImpl(
 
     override val availableNetworks = MutableStateFlow<List<WiFiNetwork>>(emptyList())
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     override val connectedNetwork = refreshBus.flatMapLatest {
         connectivityManager.currentWiFiNetwork()
     }.map {
@@ -145,11 +147,11 @@ class WiFiRepositoryImpl(
     }
 
     override fun hasWiFiPermissions(): Boolean {
-        return context.hasPermission(ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION, ACCESS_WIFI_STATE)
+        return false
     }
 
     override fun hasBackgroundLocationPermission(): Boolean {
-        return context.hasPermission(Manifest.permission.ACCESS_BACKGROUND_LOCATION)
+        return false
     }
 
     @Suppress("DEPRECATION") //It's still used. The docs are lying.
@@ -161,15 +163,12 @@ class WiFiRepositoryImpl(
         ) == 1
     }
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     @SuppressLint("HardwareIds")
     private fun NetworkCapabilities.toWiFiNetwork(): WiFiNetwork? {
-        val wifiInfo = transportInfo as? WifiInfo ?: return null
-        val ssid = if(!wifiInfo.hiddenSSID){
-            wifiInfo.ssid?.formatSSID().takeIf {
-                it != UNKNOWN_SSID
-            }
-        }else null
-        return WiFiNetwork(ssid, wifiInfo.bssid)
+        val wifiInfo = null
+        val ssid =  null
+        return WiFiNetwork(ssid, wifiInfo)
     }
 
     private fun ScanResult.toWiFiNetwork(): WiFiNetwork {

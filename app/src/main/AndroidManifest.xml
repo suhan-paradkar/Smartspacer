@@ -42,15 +42,13 @@
     <uses-permission android:name="com.kieronquinn.app.smartspacer.permission.ACCESS_SMARTSPACER_NOTIFICATIONS" />
     <uses-permission android:name="com.kieronquinn.app.smartspacer.permission.ACCESS_SMARTSPACER_BROADCASTS" />
     <uses-permission android:name="com.kieronquinn.app.smartspacer.permission.SEND_UPDATE_BROADCAST" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <uses-permission android:name="android.permission.BLUETOOTH"/>
     <uses-permission android:name="android.permission.BLUETOOTH_CONNECT"/>
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
@@ -636,15 +634,6 @@
         </provider>
 
         <provider
-            android:name=".components.smartspace.requirements.GeofenceRequirement"
-            android:authorities="${applicationId}.requirement.geofence"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="com.kieronquinn.app.smartspacer.REQUIREMENT" />
-            </intent-filter>
-        </provider>
-
-        <provider
             android:name=".components.smartspace.requirements.RecentTaskRequirement"
             android:authorities="${applicationId}.requirement.recenttask"
             android:exported="false">
@@ -693,7 +682,6 @@
             android:name=".components.smartspace.broadcasts.TimeChangedBroadcast"
             android:exported="false"/>
 
-        <receiver android:name=".receivers.GeofenceReceiver" />
         <receiver android:name=".receivers.TimeDateRequirementAlarmReceiver" />
         <receiver android:name=".receivers.CalendarTargetAlarmReceiver" />
         <receiver android:name=".receivers.CalendarTargetTOTMAlarmReceiver" />
@@ -870,24 +858,6 @@
         <activity
             android:name="com.google.android.gms.oss.licenses.OssLicensesActivity"
             android:theme="@style/AppTheme.ThirdPartyLicences" />
-
-        <!-- Google Maps SDK -->
-        <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="${MAPS_API_KEY}" />
-
-        <meta-data
-            android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version" />
-
-        <!-- Firebase Analytics & Crashlytics are disabled unless the user opts in -->
-        <meta-data
-            android:name="firebase_analytics_collection_enabled"
-            android:value="false" />
-
-        <meta-data
-            android:name="firebase_crashlytics_collection_enabled"
-            android:value="false" />
 
         <meta-data
             android:name="xposedmodule"

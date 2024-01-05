@@ -11,7 +11,7 @@ android {
     compileSdk 34
 
     defaultConfig {
-        minSdk 29
+        minSdk 28
         targetSdk 34
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -35,6 +35,7 @@ android {
     }
     buildFeatures {
         aidl true
+        buildConfig true
     }
 }
 

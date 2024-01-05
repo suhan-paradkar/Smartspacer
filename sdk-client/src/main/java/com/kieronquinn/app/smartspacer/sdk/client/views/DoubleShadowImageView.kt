@@ -84,16 +84,18 @@ constructor(
     }
 
     override fun draw(canvas: Canvas) {
-        val doubleShadowNode = mDoubleShadowNode
-        if (canvas.isHardwareAccelerated && doubleShadowNode != null) {
-            if (!doubleShadowNode.hasDisplayList()) {
-                // Record render node if its display list is not recorded or discarded
-                // (which happens when it's no longer drawn by anything).
-                val recordingCanvas = doubleShadowNode.beginRecording()
-                super.draw(recordingCanvas)
-                doubleShadowNode.endRecording()
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            val doubleShadowNode = mDoubleShadowNode
+            if (canvas.isHardwareAccelerated && doubleShadowNode != null) {
+                if (!doubleShadowNode.hasDisplayList()) {
+                    // Record render node if its display list is not recorded or discarded
+                    // (which happens when it's no longer drawn by anything).
+                    val recordingCanvas = doubleShadowNode.beginRecording()
+                    super.draw(recordingCanvas)
+                    doubleShadowNode.endRecording()
+                }
+                canvas.drawRenderNode(doubleShadowNode)
             }
-            canvas.drawRenderNode(doubleShadowNode)
         }
         super.draw(canvas)
     }
